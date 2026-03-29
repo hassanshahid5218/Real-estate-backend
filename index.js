@@ -4,6 +4,7 @@ require('dotenv').config({
 });
 // dotenv.config();
 console.log("ENV CHECK:", process.env.MONGO_URL);
+ const cors = require("cors");
 const exp=require("express")
 const app=exp()
 const PORT=5000
@@ -20,11 +21,10 @@ const cookieParser = require("cookie-parser");
 // }).catch((error)=>{
 //     console.log(error)
 // })
- const cors = require("cors");
 
 app.use(
   cors({
-    origin: ["https://real-estate-frontend-drab-ten.vercel.app/", "http://localhost:5175"],
+    origin: ["https://real-estate-frontend-drab-ten.vercel.app", "http://localhost:5175"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
