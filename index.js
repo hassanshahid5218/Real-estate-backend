@@ -29,6 +29,14 @@ app.use(
     credentials: true,
   })
 ); 
+
+// Allow Google oauth popup flow to close properly across origins
+app.use((req, res, next) => {
+  res.setHeader('Cross-Origin-Opener-Policy', 'same-origin-allow-popups');
+  res.setHeader('Cross-Origin-Embedder-Policy', 'unsafe-none');
+  next();
+});
+
 app.use(exp.json());
 app.use(cookieParser());
 app.use(exp.urlencoded({ extended: true }));
