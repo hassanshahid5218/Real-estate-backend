@@ -34,7 +34,7 @@ async function signup(req, res, next) {
     return res.cookie('access_token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
     }).status(201).json({
       success: true,
       message: 'User created successfully',
@@ -60,7 +60,7 @@ async function signin(req,res,next){
        return res.cookie('access_token', token, {
          httpOnly: true,
          secure: process.env.NODE_ENV === 'production',
-         sameSite: 'lax',
+         sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
        }).status(200).json({
          success: true,
          user: rest,
@@ -87,7 +87,7 @@ async function handlegoogle(req,res,next){
         return res.cookie('access_token', token, {
          httpOnly: true,
          secure: process.env.NODE_ENV === 'production',
-         sameSite: 'lax',
+         sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
          }).status(200).json({
            success: true,
            user: rest,
