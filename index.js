@@ -24,7 +24,7 @@ const cookieParser = require("cookie-parser");
 
 app.use(
   cors({
-    origin: ["https://real-estate-frontend-psi.vercel.app", "http://localhost:5175"],
+    origin: ["https://real-estate-frontend-eta-khaki.vercel.app", "http://localhost:5175"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
