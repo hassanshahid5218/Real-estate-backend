@@ -7,6 +7,6 @@ router.get('/test',test)
 router.post('/update/:id',verifyToken,updateuserinfo)
 router.delete('/delete/:id',verifyToken,deleteuser)
 router.get('/listings/:id',verifyToken,getUserListing)
-router.get('/:id',verifyToken,getUser)
+router.get('/:id',getUser)
 
 module.exports=router
