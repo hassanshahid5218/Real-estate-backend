@@ -41,10 +41,13 @@ app.use(exp.json());
 app.use(cookieParser());
 app.use(exp.urlencoded({ extended: true }));
 
-mongoose.connect(process.env.MONGO_URL).then(()=>{
+mongoose.connect(process.env.MONGO_URL, {
+  serverSelectionTimeoutMS: 5000, // Timeout after 5s instead of 30s
+  socketTimeoutMS: 45000, // Close sockets after 45s of inactivity
+}).then(()=>{
      console.log("database connected successfully")
 }).catch((error)=>{
-    console.log(error)
+    console.log("Database connection failed:", error)
 })
 
 app.use('/api/user',UserRoute)
