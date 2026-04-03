@@ -27,6 +27,7 @@ app.use(
     origin: ["https://real-estate-frontend-eta-khaki.vercel.app", "http://localhost:5175"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
+    allowedHeaders: ['Content-Type'],
   })
 ); 
 

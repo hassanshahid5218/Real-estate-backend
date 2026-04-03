@@ -33,8 +33,8 @@ async function signup(req, res, next) {
 
     return res.cookie('access_token', token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+      secure: true,
+      sameSite: 'none',
     }).status(201).json({
       success: true,
       message: 'User created successfully',
@@ -59,8 +59,8 @@ async function signin(req,res,next){
        const { password: pass, ...rest } = validuser._doc;
        return res.cookie('access_token', token, {
          httpOnly: true,
-         secure: process.env.NODE_ENV === 'production',
-         sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+         secure: true,
+         sameSite: 'none',
        }).status(200).json({
          success: true,
          user: rest,
@@ -86,8 +86,8 @@ async function handlegoogle(req,res,next){
         const { password: pass, ...rest } = user._doc;
         return res.cookie('access_token', token, {
          httpOnly: true,
-         secure: process.env.NODE_ENV === 'production',
-         sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+         secure: true,
+         sameSite: 'none',
          }).status(200).json({
            success: true,
            user: rest,
@@ -102,7 +102,7 @@ async function handlegoogle(req,res,next){
        await newUser.save();
        const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
        const { password: pass, ...rest } = newUser._doc;
-       return res.cookie('access_token', token, { httpOnly: true }).status(200).json(rest);
+       return res.cookie('access_token', token, { httpOnly: true, secure: true, sameSite: 'none' }).status(200).json(rest);
 
    }
    catch(error){
