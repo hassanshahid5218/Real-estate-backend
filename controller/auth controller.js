@@ -28,10 +28,17 @@ async function signup(req, res, next) {
     });
 
     await newUser.save();
+    const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
+    const { password: pass, ...rest } = newUser._doc;
 
-    res.status(201).json({
+    return res.cookie('access_token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+    }).status(201).json({
       success: true,
-      message: "User created successfully",
+      message: 'User created successfully',
+      user: rest,
     });
 
   } catch (err) {
@@ -48,13 +55,16 @@ async function signin(req,res,next){
        if(!validuser) return next(errorhandler(404,"User not found!"))
        const validpassword=bcryptjs.compareSync(password,validuser.password) 
        if(!validpassword) return next(errorhandler(404,"Invalid password"))
-       const token= jwt.sign({id:validuser._id},process.env.JWT_SECRET)
-       const {password:pass, ...rest}=validuser._doc
-       res.cookie("access_token", token, {
-        httpOnly: true,
-        secure: false,        // for localhost
-        sameSite: "lax",
-        }).status(200).json(rest)
+       const token = jwt.sign({ id: validuser._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
+       const { password: pass, ...rest } = validuser._doc;
+       return res.cookie('access_token', token, {
+         httpOnly: true,
+         secure: process.env.NODE_ENV === 'production',
+         sameSite: 'lax',
+       }).status(200).json({
+         success: true,
+         user: rest,
+       });
    }
    catch(error){
     next(error)
@@ -72,13 +82,16 @@ async function handlegoogle(req,res,next){
 
        const user = await User.findOne({ email });
        if (user) {
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
         const { password: pass, ...rest } = user._doc;
         return res.cookie('access_token', token, {
          httpOnly: true,
-         secure: false,        // for localhost
+         secure: process.env.NODE_ENV === 'production',
          sameSite: 'lax',
-         }).status(200).json(rest);
+         }).status(200).json({
+           success: true,
+           user: rest,
+         });
        }
 
        const generatedpassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8);
