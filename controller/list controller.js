@@ -40,7 +40,7 @@ async function deleteListing(req,res,next){
     return next(errorhandler(403,"You can delete only your own listing"))
    }
    try{
-      await listing.findOneAndDelete(req.params.id)
+      await listing.findByIdAndDelete(req.params.id)
       res.status(200).json("Deleted Successfully")
    }
    catch(error){
